@@ -388,7 +388,11 @@ def run_study_case(case, cfg, output):
     if case not in ("proposed", "current_only", "published_global"):
         raise ValueError(case)
     cfg = replace(cfg, history_mode="instantaneous" if case == "current_only" else "retained")
-    sim = PublishedSimulator(cfg) if case == "published_global" else RangeSimulator(cfg)
+    if cfg.events:
+        from .event_simulation import EventSimulation
+        sim = EventSimulation(case, cfg)
+    else:
+        sim = PublishedSimulator(cfg) if case == "published_global" else RangeSimulator(cfg)
     try:
         summary, arrays, records = sim.run()
         summary["case"] = case
@@ -399,12 +403,13 @@ def run_study_case(case, cfg, output):
     except Exception as exc:
         out = Path(output)
         out.mkdir(parents=True, exist_ok=True)
+        times = sim.samples.get("time", []) if cfg.events else [r["time"] for r in sim.record]
         failure = {
             "case": case,
             "status": "failed",
             "config": asdict(cfg),
             "exception": repr(exc),
-            "last_saved_time": sim.record[-1]["time"] if sim.record else None,
+            "last_saved_time": float(times[-1]) if len(times) else None,
         }
         (out / "failure.json").write_text(json.dumps(failure, indent=2) + "\n", encoding="utf-8")
         raise

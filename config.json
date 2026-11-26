@@ -1,6 +1,6 @@
 {
   "kp": 0.12,
-  "kv": 1.5,
+  "kv": 1.35,
   "ks": 2.0,
   "communication_weight": 1.0,
   "pinning": 2.0,
@@ -25,6 +25,7 @@
   "history_enabled": true,
   "history_mode": "retained",
   "robots": 6,
+  "events": true,
   "sensor_rate": 30.0,
   "range_std": 0.1,
   "velocity_std": 0.05,

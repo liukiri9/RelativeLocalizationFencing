@@ -9,6 +9,7 @@ from .core import Config
 @dataclass(frozen=True)
 class StudyConfig(Config):
     robots: int = 6
+    events: bool = True
     sensor_rate: float = 30.0
     range_std: float = 0.1
     velocity_std: float = 0.05

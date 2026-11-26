@@ -14,7 +14,7 @@ class DomainError(ValueError):
 @dataclass(frozen=True)
 class Config:
     kp: float = 0.12
-    kv: float = 1.5
+    kv: float = 1.35
     ks: float = 2.0
     communication_weight: float = 1.0
     pinning: float = 2.0
